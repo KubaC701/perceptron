@@ -33,12 +33,12 @@ class UserInterface:
         if choice == '1':
             enter_data_function()
             return 1
-        elif choice == '2':
+        if choice == '2':
             train_model_function()
             return 1
-        elif choice == '3':
+        if choice == '3':
             return 0
-        return choice
+        return 1
 
     def input_car_data(self):
         car_horsepower = self.__input_data('Enter horsepower: ')
