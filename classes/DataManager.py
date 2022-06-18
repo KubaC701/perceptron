@@ -23,7 +23,7 @@ class DataManager:
 
     def generate_loss_chart(self, epoch_loss):
         df = pd.DataFrame(epoch_loss)
-        df_plot = df.plot(kind="line", grid=True).get_figure()
+        df_plot = df.plot(kind='line', grid=True).get_figure()
         df_plot.savefig(TRAINING_LOSS_FILE_NAME)
 
     def prepare_to_view(self):

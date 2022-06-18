@@ -19,9 +19,9 @@ class Perceptron:
         self.loss = Loss()
 
     def __print_epoch(self, current_epoch, average_loss):
-        print("==================================")
-        print("epoch", current_epoch)
-        print("error rate: ", average_loss)
+        print('==================================')
+        print('epoch', current_epoch)
+        print('error rate: ', average_loss)
 
     def __prepare_row(self, row):
         params = row[:-1]
