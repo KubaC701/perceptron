@@ -3,7 +3,8 @@ import copy
 
 
 class DataManager:
-    data = pd.DataFrame([])
+    def __init__(self):
+        self.data = self.read_file("data/data.csv")
 
     @staticmethod
     def map_colors(x):
@@ -47,7 +48,7 @@ class DataManager:
     def read_file(self, file_name):
         data = pd.read_csv(file_name)
         compressed_data = self.compress_to_calculate(data)
-        self.data = pd.concat([self.data, compressed_data], ignore_index=True)
+        self.data = compressed_data
         return compressed_data
 
     def append(self, params, expected):

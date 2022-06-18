@@ -1,3 +1,6 @@
+from math import floor
+
+
 class UserInterface:
     def __input_data(self, label):
         data = input(label)
@@ -11,7 +14,14 @@ class UserInterface:
         return car_horsepower, car_weight
 
     def __print_probability(self, prediction, manufacturer):
-        print(f"Probability of {manufacturer}: {round(prediction * 100)}%")
+        percent = floor(prediction * 100)
+        if percent < 70:
+            print(
+                f"I'm not sure ({percent}%), but if I had to guess, I would say it's a {manufacturer}")
+        elif percent > 70 and percent < 90:
+            print(f"I'm pretty sure ({percent}%) it's a {manufacturer}")
+        else:
+            print(f"I'm absolutely sure ({percent}%) it's a {manufacturer}")
 
     def input_user_answer(self, prediction):
         if prediction > 0.5:

@@ -1,16 +1,10 @@
-import numpy as np
-
 from classes.DataManager import DataManager
 from classes.Perceptron import Perceptron
 from classes.UserInterface import UserInterface
 
-rg = np.random.default_rng()
-
 perceptron = Perceptron()
 data_manager = DataManager()
 user_interface = UserInterface()
-
-data = data_manager.read_file("data/data.csv")
 
 
 def manual_mode():
@@ -23,7 +17,7 @@ def manual_mode():
 
 
 def auto_mode():
-    perceptron.train_model(data)
+    perceptron.train_model(data_manager.data)
 
 
 def main():
