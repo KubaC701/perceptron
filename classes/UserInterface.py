@@ -29,6 +29,14 @@ class UserInterface:
         print("2. Let me learn")
         print("3. Quit")
 
-    def get_user_choice(self):
+    def handle_user_choice(self, enter_data_function, train_model_function):
         choice = input("Enter your choice: ")
+        if choice == '1':
+            enter_data_function()
+            return 1
+        elif choice == '2':
+            train_model_function()
+            return 1
+        elif choice == '3':
+            return 0
         return choice
