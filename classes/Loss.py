@@ -1,5 +1,7 @@
 import numpy as np
 
+from classes.DataManager import DataManager
+
 
 class Loss:
     def __init__(self):
@@ -20,3 +22,7 @@ class Loss:
         average_loss = self.get_average_loss()
         self.epoch_loss.append(average_loss)
         return average_loss
+
+    def generate_loss_chart(self):
+        chart = DataManager()
+        chart.generate_loss_chart(self.epoch_loss)

@@ -1,62 +1,38 @@
 import numpy as np
-import pandas as pd
-from classes.NeuralNetwork import NeuralNetwork
+
+from classes.DataManager import DataManager
+from classes.Perceptron import Perceptron
+from classes.UserInterface import UserInterface
 
 rg = np.random.default_rng()
 
-
-neural_network = NeuralNetwork()
-
-
-def input_user_data():
-    car_horsepower = input("Enter horsepowers: ")
-    if(car_horsepower == 'q'):
-        return None, None
-
-    car_horsepower = float(car_horsepower) / 1000
-
-    car_weight = input("Enter weight: ")
-    if(car_weight == 'q'):
-        return None, None
-
-    car_weight = float(car_weight) / 1000
-
-    return car_horsepower, car_weight
+perceptron = Perceptron()
+data_manager = DataManager()
 
 
-def manual_mode(epoch):
+def manual_mode():
     while(True):
-
-        car_horsepower, car_weight = input_user_data()
-
+        user_interface = UserInterface()
+        car_horsepower, car_weight = user_interface.input_car_data()
         if(not car_horsepower or not car_weight):
             break
 
-        feature = [car_horsepower, car_weight]
+        params = [car_horsepower, car_weight]
+        prediction = perceptron.make_prediction(params)
+        expected = user_interface.input_user_answer(prediction)
+        data_manager.append(params, expected)
+        perceptron.handle_single_row(params, expected, prediction)
+    data_manager.generate_data_chart()
 
-        prediction = make_prediction(feature)
-        if prediction == 1:
-            print("Ferrari")
-        else:
-            print("Fiat")
-        answer = input("Was that Ferrari? y/n")
-        if answer == "y":
-            expected = 1
-        else:
-            expected = 0
 
-        perceptron.make_post_prediction_update(expected, prediction, feature)
-        error_rate = errors / (len(df) * epoch)
-        print_epoch(epoch, error_rate)
-        update_arrays(car_horsepower, car_weight, expected, prediction)
-
-        epoch += 1
+def auto_mode():
+    data = data_manager.read_file("data/data.csv")
+    perceptron.train_model(data)
 
 
 def main():
-    neural_network = NeuralNetwork()
-    df = pd.read_csv("data/data.csv")
-    neural_network.train_model(df)
+    auto_mode()
+    manual_mode()
 
 
 main()
