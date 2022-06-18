@@ -10,11 +10,11 @@ perceptron = Perceptron()
 data_manager = DataManager()
 
 
-def manual_mode():
+def manual_mode(should_generate_data=False):
     while(True):
         user_interface = UserInterface()
         car_horsepower, car_weight = user_interface.input_car_data()
-        if(not car_horsepower or not car_weight):
+        if not car_horsepower or not car_weight:
             break
 
         params = [car_horsepower, car_weight]
@@ -22,7 +22,8 @@ def manual_mode():
         expected = user_interface.input_user_answer(prediction)
         data_manager.append(params, expected)
         perceptron.handle_single_row(params, expected, prediction)
-    data_manager.generate_data_chart()
+    if should_generate_data:
+        data_manager.generate_data_chart()
 
 
 def auto_mode():
@@ -31,8 +32,9 @@ def auto_mode():
 
 
 def main():
-    auto_mode()
     manual_mode()
+    auto_mode()
+    manual_mode(True)
 
 
 main()

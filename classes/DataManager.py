@@ -3,7 +3,7 @@ import copy
 
 
 class DataManager:
-    data = []
+    data = pd.DataFrame([])
 
     @staticmethod
     def map_colors(x):
@@ -23,7 +23,7 @@ class DataManager:
         df_plot.savefig("charts/Training_Loss.png")
 
     def prepare_to_view(self):
-        df = copy.deepcopy(pd.DataFrame(self.data))
+        df = copy.deepcopy(self.data)
         df['car_horsepower'] *= 1000
         df['car_weight'] *= 1000
         return df
@@ -47,7 +47,7 @@ class DataManager:
     def read_file(self, file_name):
         data = pd.read_csv(file_name)
         compressed_data = self.compress_to_calculate(data)
-        self.data = compressed_data
+        self.data = pd.concat([self.data, compressed_data], ignore_index=True)
         return compressed_data
 
     def append(self, params, expected):
