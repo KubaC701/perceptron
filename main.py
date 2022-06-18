@@ -10,31 +10,31 @@ perceptron = Perceptron()
 data_manager = DataManager()
 
 
-def manual_mode(should_generate_data=False):
+data = data_manager.read_file("data/data.csv")
+
+def manual_mode():
     while(True):
         user_interface = UserInterface()
-        car_horsepower, car_weight = user_interface.input_car_data()
-        if not car_horsepower or not car_weight:
+        user_interface.print_menu()
+        choice = user_interface.get_user_choice()
+        if choice == '1':
+            car_horsepower, car_weight = user_interface.input_car_data()
+            params = [car_horsepower, car_weight]
+            prediction = perceptron.make_prediction(params)
+            expected = user_interface.input_user_answer(prediction)
+            data_manager.append(params, expected)
+            perceptron.handle_single_row(params, expected, prediction)
+        elif choice == '2':
+            auto_mode()
+        elif choice == '3':
             break
-
-        params = [car_horsepower, car_weight]
-        prediction = perceptron.make_prediction(params)
-        expected = user_interface.input_user_answer(prediction)
-        data_manager.append(params, expected)
-        perceptron.handle_single_row(params, expected, prediction)
-    if should_generate_data:
-        data_manager.generate_data_chart()
+    data_manager.generate_data_chart()
 
 
 def auto_mode():
-    data = data_manager.read_file("data/data.csv")
     perceptron.train_model(data)
 
-
-def main():
-    manual_mode()
-    auto_mode()
-    manual_mode(True)
+manual_mode()
 
 
-main()
+
