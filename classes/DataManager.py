@@ -1,10 +1,13 @@
 import pandas as pd
 import copy
+from constants.data import CAR_HORSEPOWER_COLUMN, CAR_WEIGHT_COLUMN, EXPECTED_COLUMN
+
+from constants.files import DATA_CHART_FILE_NAME, DATA_FILE_NAME, TRAINING_LOSS_FILE_NAME
 
 
 class DataManager:
     def __init__(self):
-        self.data = self.read_file("data/data.csv")
+        self.data = self.read_file(DATA_FILE_NAME)
 
     @staticmethod
     def map_colors(x):
@@ -21,29 +24,29 @@ class DataManager:
     def generate_loss_chart(self, epoch_loss):
         df = pd.DataFrame(epoch_loss)
         df_plot = df.plot(kind="line", grid=True).get_figure()
-        df_plot.savefig("charts/Training_Loss.png")
+        df_plot.savefig(TRAINING_LOSS_FILE_NAME)
 
     def prepare_to_view(self):
         df = copy.deepcopy(self.data)
-        df['car_horsepower'] *= 1000
-        df['car_weight'] *= 1000
+        df[CAR_HORSEPOWER_COLUMN] *= 1000
+        df[CAR_WEIGHT_COLUMN] *= 1000
         return df
 
     def compress_to_calculate(self, data):
         new_data = data
-        new_data['car_horsepower'] /= 1000
-        new_data['car_weight'] /= 1000
+        new_data[CAR_HORSEPOWER_COLUMN] /= 1000
+        new_data[CAR_WEIGHT_COLUMN] /= 1000
         return new_data
 
     def generate_data_chart(self):
         data = self.prepare_to_view()
         df = pd.DataFrame(data)
         df_plot = df.plot.scatter(
-            x='car_horsepower', y='car_weight', c=df['expected'].map(self.map_colors)
+            x=CAR_HORSEPOWER_COLUMN, y=CAR_WEIGHT_COLUMN, c=df[EXPECTED_COLUMN].map(self.map_colors)
         )
         fig = df_plot.get_figure()
-        self.save_to_file("data/data.csv")
-        fig.savefig("charts/chart.png")
+        self.save_to_file(DATA_FILE_NAME)
+        fig.savefig(DATA_CHART_FILE_NAME)
 
     def read_file(self, file_name):
         data = pd.read_csv(file_name)
@@ -53,9 +56,9 @@ class DataManager:
 
     def append(self, params, expected):
         new_row = pd.DataFrame({
-            'car_horsepower': params[0],
-            'car_weight': params[1],
-            'expected': expected
+            CAR_HORSEPOWER_COLUMN: params[0],
+            CAR_WEIGHT_COLUMN: params[1],
+            EXPECTED_COLUMN: expected
         }, index=[len(self.data) - 1])
         self.data = pd.concat([self.data, new_row], ignore_index=True)
 
