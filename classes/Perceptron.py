@@ -18,15 +18,22 @@ class Perceptron:
         self.activation_function = activation_function
         self.loss = Loss()
 
-    def __print_epoch(self, current_epoch, average_loss):
-        print('==================================')
-        print('epoch', current_epoch)
-        print('error rate: ', average_loss)
+    @staticmethod
+    def __generate_weights(n_values):
+        weights = rg.random((1, n_values))[0]
+        return weights
 
-    def __prepare_row(self, row):
+    @staticmethod
+    def __prepare_row(row):
         params = row[:-1]
         expected = row[-1]
         return [params[0], params[1]], expected
+
+    @staticmethod
+    def __print_epoch(current_epoch, average_loss):
+        print('==================================')
+        print('epoch', current_epoch)
+        print('error rate: ', average_loss)
 
     def __get_weighted_sum(self, params):
         return np.dot(params, self.weights) + self.bias
@@ -40,10 +47,6 @@ class Perceptron:
             new_w = w + self.learning_rate*(expected-prediction)*x
             new_weights.append(new_w)
         return new_weights
-
-    def __generate_weights(self, n_values):
-        weights = rg.random((1, n_values))[0]
-        return weights
 
     def __make_post_prediction_update(self, expected, prediction, params):
         self.weights = self.__update_weights(expected, prediction, params)
